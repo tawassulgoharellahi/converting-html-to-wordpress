@@ -24,7 +24,7 @@ This repository contains a lightweight, automated utility that takes a static HT
 Run the Python script with paths to your HTML file, your assets directory, and your desired theme name:
 
 ```bash
-python html2wp.py --html <path_to_index.html> --assets <path_to_assets> --theme <theme_name>
+python3 html2wp.py --html <path_to_index.html> --assets <path_to_assets> --theme <theme_name>
 ```
 
 ### Arguments
