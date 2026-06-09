@@ -1,0 +1,13 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Generated WordPress Theme ZIPs and output folders
+*.zip
+custom-theme/
+/my-theme/
+
+# OS metadata
+.DS_Store
+Thumbs.db
