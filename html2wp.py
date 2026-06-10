@@ -176,6 +176,45 @@ def convert_to_wp(html_dir, assets_path, theme_name, single_html=None):
         with open(os.path.join(theme_dir, template_filename), 'w', encoding='utf-8') as out_f:
             if template_filename == "front-page.php":
                 out_f.write("<?php get_header(); ?>\n" + body_html + "\n<?php get_footer(); ?>")
+                # Also create index.php fallback template required by WordPress
+                index_php_content = f"""<?php
+/**
+ * The main template file
+ */
+get_header();
+?>
+<main role="main" class="site-main">
+    <div class="container mx-auto py-12 text-white">
+        <?php
+        if ( have_posts() ) :
+            while ( have_posts() ) : the_post();
+                ?>
+                <article id="post-<?php the_ID(); ?>" <?php post_class('mb-8'); ?>>
+                    <header class="entry-header mb-4">
+                        <h1 class="entry-title text-3xl font-bold">
+                            <a href="<?php the_permalink(); ?>" class="text-white"><?php the_title(); ?></a>
+                        </h1>
+                    </header>
+                    <div class="entry-content">
+                        <?php the_excerpt(); ?>
+                    </div>
+                </article>
+                <?php
+            endwhile;
+            the_posts_navigation();
+        else :
+            ?>
+            <p><?php esc_html_e( 'It seems we can&rsquo;t find what you&rsquo;re looking for.', '{theme_name}' ); ?></p>
+            <?php
+        endif;
+        ?>
+    </div>
+</main>
+<?php
+get_footer();
+"""
+                with open(os.path.join(theme_dir, 'index.php'), 'w', encoding='utf-8') as idx_f:
+                    idx_f.write(index_php_content)
             else:
                 out_f.write(f"<?php\n/*\nTemplate Name: {page_info['name']}\n*/\nget_header();\n?>\n" + body_html + "\n<?php get_footer(); ?>")
 
